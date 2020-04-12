@@ -16,7 +16,22 @@
     <button v-on:click="addPlace()">Add a new place</button>
     <div v-bind:key="place.id" v-for="place in places">
       <p>{{place.id}}. Name: {{ place.name }}</p>
-      <p>Address: {{ place.address }}</p>
+
+      <button v-on:click="showPlace(place)">Show Info</button>
+
+      <div v-if="currentPlace === place">
+        <p>Address: {{ place.address }}</p>
+        <p>
+          Name:
+          <input v-model="place.name" />
+        </p>
+        <p>
+          Name:
+          <input v-model="place.address" />
+        </p>
+        <button v-on:click="updatePlace(place)">Update Info</button>
+        <button v-on:click="destroyPlace(place)">Delete Place</button>
+      </div>
 
       <hr />
     </div>
@@ -36,6 +51,7 @@ export default {
       places: [],
       newName: "",
       newAddress: "",
+      currentPlace: "",
     };
   },
   created: function() {
@@ -58,10 +74,39 @@ export default {
       axios
         .post("/api/places", params)
         .then(response => {
-          console.log("Success", response.data);
+          console.log("Successfuly Created.", response.data);
           this.places.push(params);
           this.newName = "";
           this.newAddress = "";
+        })
+        .catch(error => {
+          this.errors = error.response.data.errors;
+        });
+    },
+    showPlace: function(thePlace) {
+      this.currentPlace = thePlace;
+    },
+    updatePlace: function(thePlace) {
+      let params = {
+        name: thePlace.name,
+        address: thePlace.address,
+      };
+      axios
+        .patch("/api/places/" + thePlace.id, params)
+        .then(response => {
+          console.log("Successfuly updated...", response.data);
+        })
+        .catch(error => {
+          this.errors = error.response.data.errors;
+        });
+    },
+    destroyPlace: function(thePlace) {
+      axios
+        .delete("/api/places/" + thePlace.id)
+        .then(response => {
+          console.log("Place Successfuly deleted!", response.data);
+          let index = this.places.indexOf(thePlace);
+          this.places.splice(index, 1);
         })
         .catch(error => {
           this.errors = error.response.data.errors;
