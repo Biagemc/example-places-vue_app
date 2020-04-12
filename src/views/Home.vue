@@ -3,42 +3,65 @@
     <ul>
       <li v-bind:key="error.response.data.errors" v-for="error in errors">{{ error }}</li>
     </ul>
-    <h1>{{ message }}</h1>
+
     <h1>All Places</h1>
-    <p>
-      Name:
-      <input v-model="newName" />
-    </p>
-    <p>
-      Name:
-      <input v-model="newAddress" />
-    </p>
-    <button v-on:click="addPlace()">Add a new place</button>
-    <div v-bind:key="place.id" v-for="place in places">
-      <p>{{place.id}}. Name: {{ place.name }}</p>
 
-      <button v-on:click="showPlace(place)">Show Info</button>
+    <form>
+      <div class="form-group">
+        <label for="place-name">Name</label>
 
-      <div v-if="currentPlace === place">
-        <p>Address: {{ place.address }}</p>
-        <p>
-          Name:
-          <input v-model="place.name" />
-        </p>
-        <p>
-          Name:
-          <input v-model="place.address" />
-        </p>
-        <button v-on:click="updatePlace(place)">Update Info</button>
-        <button v-on:click="destroyPlace(place)">Delete Place</button>
+        <input v-model="newName" class="form-control" id="place-name" />
       </div>
+      <div class="form-group">
+        <label for="place-address">Address</label>
 
+        <input v-model="newAddress" class="form-control" id="place-address" />
+      </div>
+      <button type="submit" v-on:click="addPlace()" class="btn btn-primary">Add a new place</button>
+    </form>
+
+    <div v-bind:key="place.id" v-for="place in places">
+      <div class="row">
+        <div class="card column-lg-4" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{place.id}}. {{ place.name }}</h5>
+
+            <button class="btn btn-primary card-link" v-on:click="showPlace(place)">Show Info</button>
+          </div>
+        </div>
+
+        <div v-if="currentPlace === place">
+          <p>Address: {{ place.address }}</p>
+          <form>
+            <div class="form-group">
+              <div class="form-group">
+                <label for="place-name">Name</label>
+
+                <input v-model="place.name" class="form-control" id="place-name" />
+              </div>
+              <div class="form-group">
+                <label for="place-name">Address</label>
+
+                <input v-model="place.address" class="form-control" id="place-name" />
+              </div>
+            </div>
+            <button class="btn btn-primary card-link" v-on:click="updatePlace(place)">Update Info</button>
+            <button class="btn btn-primary card-link" v-on:click="destroyPlace(place)">Delete Place</button>
+          </form>
+        </div>
+      </div>
       <hr />
     </div>
   </div>
 </template>
 
 <style>
+form {
+  width: 30%;
+  margin: 2em 30em;
+  justify-content: center;
+  align-content: center;
+}
 </style>
 
 <script>

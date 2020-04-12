@@ -1,10 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <nav class="navbar navbar-light">
+        <span class="navbar-brand mb-0 h1">myPlaces</span>
+      </nav>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -19,6 +20,7 @@
 
 #nav {
   padding: 30px;
+  background-color: #333333;
 }
 
 #nav a {
